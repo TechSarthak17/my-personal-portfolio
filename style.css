@@ -639,3 +639,16 @@ footer {
         padding: 10rem 12%;
     }
 }
+
+/* Projects Section  */
+
+.project-links {
+    /*  flex-start or center  */
+    justify-content: center; 
+    padding: 0 1.5rem 1.5rem;
+}
+
+.full-width-btn {
+    width: 100%; 
+    justify-content: center; 
+}
