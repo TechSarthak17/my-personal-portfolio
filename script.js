@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('header nav a');
     const header = document.querySelector('header');
+    
+    // Mobile Menu elements (defined early to prevent scope issues in window.onscroll)
+    const menuIcon = document.querySelector('#menu-icon');
+    const navbar = document.querySelector('.navbar');
 
     window.onscroll = () => {
         // Sticky Header
@@ -42,9 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // --- Mobile Menu Toggle ---
-    const menuIcon = document.querySelector('#menu-icon');
-    const navbar = document.querySelector('.navbar');
-
     menuIcon.onclick = () => {
         menuIcon.classList.toggle('bx-x'); // Toggle hamburger/close icon
         navbar.classList.toggle('active'); // Toggle visibility of the menu
@@ -61,25 +62,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Contact Form Submission Feedback ---
+    // ==========================================================
+    // --- CONTACT FORM SUBMISSION & CUSTOM MODAL LOGIC (UPDATED) ---
+    // ==========================================================
     const contactForm = document.getElementById('contact-form');
+    const successModal = document.getElementById('success-modal');
+    // We select both close buttons from the modal
+    const closeButtons = document.querySelectorAll('#success-modal .close-btn, #success-modal .close-btn-bottom');
+
+    // Function to show the modal with a smooth transition
+    function showModal() {
+        successModal.classList.add('show');
+    }
+
+    // Function to hide the modal
+    function hideModal() {
+        successModal.classList.remove('show');
+    }
+
+    // Add event listeners to close buttons
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', hideModal);
+    });
+
+    // Close modal if user clicks outside of it (on the backdrop)
+    window.addEventListener('click', function(event) {
+        if (event.target === successModal) {
+            hideModal();
+        }
+    });
+
 
     if(contactForm) {
         contactForm.addEventListener('submit', async function(e) {
-            // Note: If using Formspree, the form submission is handled automatically
-            // by the 'action' attribute, but we can intercept it to provide feedback.
-            
-            // For a basic alert feedback (using Formspree's success redirect):
-            
-            // To prevent the page from navigating away after Formspree's redirect, 
-            // Formspree suggests using a fetch request. 
-            // If you keep the 'action' attribute, Formspree will redirect to a 'Thank you' page.
-            // For a smoother UX, uncomment the fetch method below and remove the 'action' and 'method' attributes from the HTML form.
-
             e.preventDefault(); 
             
             const formData = new FormData(this);
-            const formURL = this.getAttribute('action'); // Get the Formspree URL from HTML
+            const formURL = this.getAttribute('action'); 
+            const submitButton = this.querySelector('.send-btn');
+            
+            // Disable button and show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Sending...';
 
             try {
                  const response = await fetch(formURL, {
@@ -91,7 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
                  });
 
                  if (response.ok) {
-                     alert('✅ Message sent successfully! I will get back to you soon.');
+                     // ❌ Old alert removed.
+                     showModal(); // ✅ New custom modal is shown.
                      contactForm.reset();
                  } else {
                      alert('❌ Oops! There was an issue sending your message. Please try again.');
@@ -100,6 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                  console.error('Submission error:', error);
                  alert('❌ An unexpected error occurred. Please try emailing me directly.');
+            } finally {
+                // Re-enable button and restore original text
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="bx bxs-send"></i> Send Message';
             }
         });
     }

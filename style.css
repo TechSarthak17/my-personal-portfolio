@@ -652,3 +652,89 @@ footer {
     width: 100%; 
     justify-content: center; 
 }
+
+
+/* --- CUSTOM SUCCESS MODAL STYLES (नया CSS) --- */
+.modal {
+    display: none; /* Default state: Hidden */
+    position: fixed;
+    z-index: 1001; /* Must be higher than header */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
+    backdrop-filter: blur(5px);
+    opacity: 0; /* For transition effect */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--bg-color);
+    margin: 15% auto; /* Center vertically and horizontally */
+    padding: 30px;
+    border-radius: var(--border-radius);
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-50px); /* For smooth entry animation */
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-icon {
+    font-size: 6rem;
+    color: #28a745; /* Success Green */
+    margin-bottom: 1rem;
+    display: block;
+    animation: bounce 0.5s ease-out;
+}
+
+@keyframes bounce {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-content h2 {
+    font-size: 2.8rem;
+    color: var(--accent-blue);
+    margin-bottom: 0.5rem;
+}
+
+.modal-content p {
+    font-size: 1.6rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: var(--accent-purple);
+    text-decoration: none;
+}
+
+.close-btn-bottom {
+    /* Reusing the primary-btn style for the modal button */
+    padding: 0.8rem 2rem;
+    font-size: 1.6rem;
+    width: 100%;
+}
