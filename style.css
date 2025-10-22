@@ -566,9 +566,9 @@ footer {
         border-bottom: none;
     }
 
-    .social-links {
-        display: none; /* Hide social links on mobile for cleaner header */
-    }
+    /* .social-links {
+        display: none; Hide social links on mobile for cleaner header
+    } */
 
     /* Home Section adjustments */
     .home {
@@ -629,7 +629,7 @@ footer {
     }
     
     .social-links {
-        display: none; /* Hide to save space */
+        display: flex; /* Hide to save space */
     }
 }
 
